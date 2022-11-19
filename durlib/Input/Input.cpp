@@ -73,6 +73,48 @@ namespace DURLIB
         return converted;
     }
 
+    double GIBD(double min, double max)
+    {
+        while (true)
+        {
+            double input = GIBD();
+            if (input >= min && input <= max)
+            {
+                return input;
+            }
+            else
+            {
+                CLI_ERROR("EXCEPTION! INPUT OUT OF RANGE: {0} in [MIN]{1}-[MAX]{2}\nTry again:", input, min, max);
+            }
+        }
+    }
+
+    char GIBC()
+    {
+        std::string input;
+        char converted;
+        while (true)
+        {
+            std::cin >> input;
+            try
+            {
+                converted = input[0];
+                break;
+            }
+            catch (std::invalid_argument &i)
+            {
+                CLI_ERROR("{0}", i.what());
+                CLI_ERROR("EXCEPTION! NOT A DOUBLE NUMBER: {0}\nTry again:", input);
+            }
+            catch (std::out_of_range &i)
+            {
+                CLI_ERROR("{0}", i.what());
+                CLI_ERROR("EXCEPTION! INPUT OUT OF RANGE: {0}\nTry again:", input);
+            }
+        }
+        return converted;
+    }
+
     std::string GIBS()
     {
         std::string input;
@@ -117,6 +159,24 @@ namespace DURLIB
             default:
                 CLI_ERROR("\n!EXCEPTION!\n");
                 break;
+            }
+        }
+    }
+
+    char YesOrNo()
+    {
+        while (true)
+        {
+            CLI_TRACE("(1,Y,y) YES | (0,N,n) NO");
+            char input = GIBC();
+
+            if (input == '1' || input == 'Y' || input == 'y')
+            {
+                return 'y';
+            }
+            if (input == '0' || input == 'N' || input == 'n')
+            {
+                return 'n';
             }
         }
     }

@@ -10,9 +10,12 @@ namespace DURLIB
     int GIBI();
     int GIBI(int min, int max);
     double GIBD();
+    double GIBD(double min, double max);
+    char GIBC();
     std::string GIBS();
     std::string GIBS_NW();
     int Get_Input_Yes_Or_No();
+    char YesOrNo();
     bool HasWhitespace(const std::string &text);
     bool validateName(const std::string &name);
     bool isLetters(const std::string_view &text);

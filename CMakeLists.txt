@@ -2,7 +2,7 @@
 # https://codingnest.com/basic-cmake-part-2/
 
 cmake_minimum_required(VERSION 3.0.0)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
@@ -13,22 +13,17 @@ set(CMAKE_TOOLCHAIN_FILE "")
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
 set(PROJECT_VERSION_PATCH 0)
-set(PROJECT_VERSION_TWEAK 0)
+set(PROJECT_VERSION_TWEAK 1)
 set(PROJECT_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK})
 
 project(DURLIB VERSION ${PROJECT_VERSION})
 
 find_package(Git QUIET)
-
-set(CMAKE_PREFIX_PATH "C:\\Libraries\\Build\\x64\\msvc17\\fmt")
 find_package(fmt CONFIG REQUIRED)
-set(CMAKE_PREFIX_PATH "C:\\Libraries\\Build\\x64\\msvc17\\spdlog")
 find_package(spdlog CONFIG REQUIRED)
-
-set(CMAKE_TOOLCHAIN_FILE "C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
-set(CMAKE_PREFIX_PATH "C:\\vcpkg\\installed\\x64-windows\\share\\jsoncpp")
 find_package(jsoncpp CONFIG REQUIRED)
 
+# find_package(sqlite3 REQUIRED)
 # find_package(wxWidgets REQUIRED)
 # find_package(OpenCV REQUIRED)
 
@@ -50,11 +45,19 @@ if(WIN32)
         # ADD SOURCE FILES
         # DURLIB .CPP FILES
         file(GLOB_RECURSE DURLIB_CPP
+                "${PROJECT_SOURCE_DIR}/durlib/Datatype/Date/DateMath.cpp"
                 "${PROJECT_SOURCE_DIR}/durlib/Math/Rational/Fraction.cpp"
+                "${PROJECT_SOURCE_DIR}/durlib/Math/Formulas/EarthCoordinates.cpp"
+                "${PROJECT_SOURCE_DIR}/durlib/Math/Formulas/Utils.cpp"
                 "${PROJECT_SOURCE_DIR}/durlib/Input/Input.cpp"
                 "${PROJECT_SOURCE_DIR}/durlib/Input/Validation.cpp"
                 "${PROJECT_SOURCE_DIR}/durlib/Log/Log.cpp"
-                "${PROJECT_SOURCE_DIR}/durlib/Serialization/Json/Jsonparse.cpp"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/Json/Jsonparse.cpp"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/CSV/CSV.cpp"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/CSV/CSVLL.cpp"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/CSV/Algorithms/ALGO.cpp"
+                #"${PROJECT_SOURCE_DIR}/durlib/Database/sqlite3/core/database.cpp"
+                #"${PROJECT_SOURCE_DIR}/durlib/Database/sqlite3/item/item.cpp"
         )
 
         # DURLIB .H FILES
@@ -63,10 +66,17 @@ if(WIN32)
                 "${PROJECT_SOURCE_DIR}/durlib/Datatype/Date/DateMath.h"
                 "${PROJECT_SOURCE_DIR}/durlib/Math/Math.h"
                 "${PROJECT_SOURCE_DIR}/durlib/Math/Rational/Fraction.h"
+                "${PROJECT_SOURCE_DIR}/durlib/Math/Formulas/EarthCoordinates.h"
+                "${PROJECT_SOURCE_DIR}/durlib/Math/Formulas/Utils.h"
                 "${PROJECT_SOURCE_DIR}/durlib/Input/Input.h"
                 "${PROJECT_SOURCE_DIR}/durlib/Input/Validation.h"
                 "${PROJECT_SOURCE_DIR}/durlib/Log/Log.h"
-                "${PROJECT_SOURCE_DIR}/durlib/Serialization/Json/Jsonparse.h"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/Json/Jsonparse.h"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/CSV/CSV.h"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/CSV/CSVLL.h"
+                #"${PROJECT_SOURCE_DIR}/durlib/Serialization/CSV/Algorithms/ALGO.h"
+                #"${PROJECT_SOURCE_DIR}/durlib/Database/sqlite3/core/database.h"
+                #"${PROJECT_SOURCE_DIR}/durlib/Database/sqlite3/item/item.h"
         )
 
         if(${VERBOSE_LIST})
@@ -93,16 +103,18 @@ if(WIN32)
         target_include_directories(DURLIB PUBLIC
                 ${DURLIB_H}
                 "${PROJECT_SOURCE_DIR}/."
+                "${PROJECT_BINARY_DIR}/vendor/sqlite"
         )
 
         # COMPILER DEFINITIONS FOR DURLIB.
         target_compile_definitions(DURLIB PUBLIC DURLIB_PLATFORM_WINDOWS)
         target_compile_definitions(DURLIB PUBLIC DURLIB_STATIC_LIBRARY)
         target_compile_definitions(DURLIB PUBLIC DURLIB_ENABLE_ASSERTS)
-
+        
         # ENABLE PROFILING FOR DEBUG BUILS.
         if(CMAKE_BUILD_TYPE STREQUAL Debug)
                 target_compile_definitions(DURLIB PUBLIC DURLIB_DEBUG_PROFILING)
+                target_compile_definitions(DURLIB PUBLIC DURLIB_ENABLE_DEBUG_LOG)
         endif(CMAKE_BUILD_TYPE STREQUAL Debug)
 
         if(${MAIN_TEST})

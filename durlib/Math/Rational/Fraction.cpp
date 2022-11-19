@@ -208,6 +208,7 @@ namespace DURLIB
         return temp;
     }
     // Relation operators:
+    // C++20  OPERATORS:
     bool Fraction::operator==(const Fraction &FracRight) const
     {
         return ((this->Numerator == FracRight.Numerator) && (this->Denominator == FracRight.Denominator));
@@ -240,6 +241,39 @@ namespace DURLIB
         int frac2 = this->Denominator * FracRight.Numerator;
         return (frac1 <= frac2);
     }
+    // C++17 OPERATORS:
+    // bool Fraction::operator==(const Fraction &FracRight) const
+    // {
+    //     return ((this->Numerator == FracRight.Numerator) && (this->Denominator == FracRight.Denominator));
+    // }
+    // bool Fraction::operator!=(const Fraction &FracRight) const
+    // {
+    //     return ((this->Numerator != FracRight.Numerator) || (this->Denominator != FracRight.Denominator));
+    // }
+    // bool Fraction::operator>(const Fraction &FracRight) const
+    // {
+    //     int frac1 = this->Numerator * FracRight.Denominator;
+    //     int frac2 = this->Denominator * FracRight.Numerator;
+    //     return (frac1 > frac2);
+    // }
+    // bool Fraction::operator>=(const Fraction &FracRight) const
+    // {
+    //     int frac1 = this->Numerator * FracRight.Denominator;
+    //     int frac2 = this->Denominator * FracRight.Numerator;
+    //     return (frac1 >= frac2);
+    // }
+    // bool Fraction::operator<(const Fraction &FracRight) const
+    // {
+    //     int frac1 = this->Numerator * FracRight.Denominator;
+    //     int frac2 = this->Denominator * FracRight.Numerator;
+    //     return (frac1 < frac2);
+    // }
+    // bool Fraction::operator<=(const Fraction &FracRight) const
+    // {
+    //     int frac1 = this->Numerator * FracRight.Denominator;
+    //     int frac2 = this->Denominator * FracRight.Numerator;
+    //     return (frac1 <= frac2);
+    // }
     // Assignment operators:
     Fraction operator+=(Fraction &FracLeft, const Fraction &FracRight)
     {

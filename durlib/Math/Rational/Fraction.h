@@ -65,12 +65,20 @@ namespace DURLIB
         friend Fraction operator/(const Fraction &FracLeft, const Fraction &FracRight);
 
         // Relation operators:
-        bool Fraction::operator==(const Fraction &FracRight) const;
-        bool Fraction::operator!=(const Fraction &FracRight) const;
-        bool Fraction::operator>(const Fraction &FracRight) const;
-        bool Fraction::operator>=(const Fraction &FracRight) const;
-        bool Fraction::operator<(const Fraction &FracRight) const;
-        bool Fraction::operator<=(const Fraction &FracRight) const;
+        // C++20  OPERATORS:
+        bool operator==(const Fraction &FracRight) const;
+        bool operator!=(const Fraction &FracRight) const;
+        bool operator>(const Fraction &FracRight) const;
+        bool operator>=(const Fraction &FracRight) const;
+        bool operator<(const Fraction &FracRight) const;
+        bool operator<=(const Fraction &FracRight) const;
+        // C++17 OPERATORS:
+        // bool Fraction::operator==(const Fraction &FracRight) const;
+        // bool Fraction::operator!=(const Fraction &FracRight) const;
+        // bool Fraction::operator>(const Fraction &FracRight) const;
+        // bool Fraction::operator>=(const Fraction &FracRight) const;
+        // bool Fraction::operator<(const Fraction &FracRight) const;
+        // bool Fraction::operator<=(const Fraction &FracRight) const;
 
         // Assignment operators:
         friend Fraction operator+=(Fraction &FracLeft, const Fraction &FracRight);
@@ -95,11 +103,11 @@ struct fmt::formatter<DURLIB::Fraction> : fmt::formatter<std::string>
     {
         if ((my.GetNumerator() % my.GetDenominator()) == 0)
         {
-            return format_to(ctx.out(), "{}/{} ({})", my.GetNumerator(), my.GetDenominator(), my.GetNumerator() / my.GetDenominator());
+            return fmt::format_to(ctx.out(), "{}/{} ({})", my.GetNumerator(), my.GetDenominator(), my.GetNumerator() / my.GetDenominator());
         }
         else
         {
-            return format_to(ctx.out(), "{}/{}", my.GetNumerator(), my.GetDenominator());
+            return fmt::format_to(ctx.out(), "{}/{}", my.GetNumerator(), my.GetDenominator());
         }
     }
 };
